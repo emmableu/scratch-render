@@ -1,69 +1,17 @@
-## scratch-render
-#### WebGL-based rendering engine for Scratch 3.0
+## Scratch Render Patched for WebPack
 
-[![Build Status](https://travis-ci.org/LLK/scratch-render.svg?branch=develop)](https://travis-ci.org/LLK/scratch-render)
-[![Greenkeeper badge](https://badges.greenkeeper.io/LLK/scratch-render.svg)](https://greenkeeper.io/)
-
-## Installation
-```bash
-npm install https://github.com/LLK/scratch-render.git
+The original [scratch-render](https://github.com/LLK/scratch-render) does not work as a node_module with Create React App when importing sprite.vert and sprite.frag in ShadeManager.js:  
+it would output this error: 
+```$xslt
+twgl-full.js:1788 1: #define DRAW_MODE_default
+2: #define ENABLE_fisheye
+3: #define ENABLE_mosaic
+4: #define ENABLE_ghost
+5: export default "#define GLSLIFY 1\nexport default __webpack_public_path__ + \"static/media/sprite.485d82de.vert\";";
+*** Error compiling shader: ERROR: 0:5: 'export' : syntax error
 ```
 
-## Setup
-```html
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Scratch WebGL rendering demo</title>
-    </head>
+To fix it, this code repository add [this small update](https://github.com/emmableu/scratch-render/commit/484252ba17438fa27deb930c7a3ec090deef9fb0) to the master branch of scratch-render.
 
-    <body>
-        <canvas id="myStage"></canvas>
-        <canvas id="myDebug"></canvas>
-    </body>
-</html>
-```
-
-```js
-var canvas = document.getElementById('myStage');
-var debug = document.getElementById('myDebug');
-
-// Instantiate the renderer
-var renderer = new require('scratch-render')(canvas);
-
-// Connect to debug canvas
-renderer.setDebugCanvas(debug);
-
-// Start drawing
-function drawStep() {
-    renderer.draw();
-    requestAnimationFrame(drawStep);
-}
-drawStep();
-
-// Connect to worker (see "playground" example)
-var worker = new Worker('worker.js');
-renderer.connectWorker(worker);
-```
-
-## Standalone Build
-```bash
-npm run build
-```
-
-```html
-<script src="/path/to/render.js"></script>
-<script>
-    var renderer = new window.RenderWebGLLocal();
-    // do things
-</script>
-```
-
-## Testing
-```bash
-npm test
-```
-
-## Donate
-We provide [Scratch](https://scratch.mit.edu) free of charge, and want to keep it that way! Please consider making a [donation](https://secure.donationpay.org/scratchfoundation/) to support our continued engineering, design, community, and resource development efforts. Donations of any size are appreciated. Thank you!
+The installment and other things are the same as the original [scratch-render](https://github.com/LLK/scratch-render) repo.  
+ 
